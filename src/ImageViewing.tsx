@@ -123,6 +123,7 @@ function ImageViewing({
           data={images}
           horizontal
           pagingEnabled
+          accessible={Boolean(accessibilityLabel)}
           accessibilityLabel={accessibilityLabel}
           windowSize={2}
           initialNumToRender={1}
