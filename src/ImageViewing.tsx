@@ -111,16 +111,7 @@ function ImageViewing({
       hardwareAccelerated
     >
       <StatusBarManager presentationStyle={presentationStyle} />
-      <View style={[styles.container, { opacity, backgroundColor }]}>
-        <Animated.View style={[styles.header, { transform: headerTransform }]}>
-          {typeof HeaderComponent !== "undefined" ? (
-            React.createElement(HeaderComponent, {
-              imageIndex: currentImageIndex,
-            })
-          ) : (
-            <ImageDefaultHeader onRequestClose={onRequestCloseEnhanced} />
-          )}
-        </Animated.View>
+      <View style={[styles.container, { opacity, backgroundColor }]}>        
         <VirtualizedList
           ref={imageList}
           data={images}
@@ -156,6 +147,15 @@ function ImageViewing({
           //@ts-ignore
           keyExtractor={(imageSrc) => imageSrc.uri || `${imageSrc}`}
         />
+        <Animated.View style={[styles.header, { transform: headerTransform }]}>
+          {typeof HeaderComponent !== "undefined" ? (
+            React.createElement(HeaderComponent, {
+              imageIndex: currentImageIndex,
+            })
+          ) : (
+            <ImageDefaultHeader onRequestClose={onRequestCloseEnhanced} />
+          )}
+        </Animated.View>
         {typeof FooterComponent !== "undefined" && (
           <Animated.View
             style={[styles.footer, { transform: footerTransform }]}
