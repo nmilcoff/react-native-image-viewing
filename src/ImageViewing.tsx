@@ -42,6 +42,7 @@ type Props = {
   HeaderComponent?: ComponentType<{ imageIndex: number }>;
   FooterComponent?: ComponentType<{ imageIndex: number }>;
   accessibilityLabel?: string;
+  hideCloseButtonOnZoom?: boolean;
 };
 
 const DEFAULT_ANIMATION_TYPE = "fade";
@@ -49,6 +50,7 @@ const DEFAULT_BG_COLOR = "#000";
 const DEFAULT_DELAY_LONG_PRESS = 800;
 const SCREEN = Dimensions.get("screen");
 const SCREEN_WIDTH = SCREEN.width;
+const DEFAULT_HIDE_CLOSE_BUTTON_ON_ZOOM = true;
 
 function ImageViewing({
   images,
@@ -66,6 +68,7 @@ function ImageViewing({
   HeaderComponent,
   FooterComponent,
   accessibilityLabel,
+  hideCloseButtonOnZoom = DEFAULT_HIDE_CLOSE_BUTTON_ON_ZOOM,
 }: Props) {
   const imageList = React.createRef<VirtualizedList<ImageSource>>();
   const [opacity, onRequestCloseEnhanced] = useRequestClose(onRequestClose);
@@ -86,9 +89,11 @@ function ImageViewing({
     (isScaled: boolean) => {
       // @ts-ignore
       imageList?.current?.setNativeProps({ scrollEnabled: !isScaled });
-      toggleBarsVisible(!isScaled);
+      if (hideCloseButtonOnZoom) {
+        toggleBarsVisible(!isScaled);
+      }
     },
-    [imageList],
+    [imageList]
   );
 
   if (!visible) {
@@ -108,15 +113,13 @@ function ImageViewing({
       <StatusBarManager presentationStyle={presentationStyle} />
       <View style={[styles.container, { opacity, backgroundColor }]}>
         <Animated.View style={[styles.header, { transform: headerTransform }]}>
-          {typeof HeaderComponent !== "undefined"
-            ? (
-              React.createElement(HeaderComponent, {
-                imageIndex: currentImageIndex,
-              })
-            )
-            : (
-              <ImageDefaultHeader onRequestClose={onRequestCloseEnhanced} />
-            )}
+          {typeof HeaderComponent !== "undefined" ? (
+            React.createElement(HeaderComponent, {
+              imageIndex: currentImageIndex,
+            })
+          ) : (
+            <ImageDefaultHeader onRequestClose={onRequestCloseEnhanced} />
+          )}
         </Animated.View>
         <VirtualizedList
           ref={imageList}
