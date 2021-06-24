@@ -41,6 +41,7 @@ type Props = {
   delayLongPress?: number;
   HeaderComponent?: ComponentType<{ imageIndex: number }>;
   FooterComponent?: ComponentType<{ imageIndex: number }>;
+  accessibilityLabel?: string;
 };
 
 const DEFAULT_ANIMATION_TYPE = "fade";
@@ -64,6 +65,7 @@ function ImageViewing({
   delayLongPress = DEFAULT_DELAY_LONG_PRESS,
   HeaderComponent,
   FooterComponent,
+  accessibilityLabel,
 }: Props) {
   const imageList = React.createRef<VirtualizedList<ImageSource>>();
   const [opacity, onRequestCloseEnhanced] = useRequestClose(onRequestClose);
@@ -121,6 +123,7 @@ function ImageViewing({
           data={images}
           horizontal
           pagingEnabled
+          accessibilityLabel={accessibilityLabel}
           windowSize={2}
           initialNumToRender={1}
           maxToRenderPerBatch={1}
