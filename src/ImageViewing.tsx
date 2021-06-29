@@ -189,4 +189,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ImageViewing;
+const EnhancedImageViewing = (props: Props) => (
+  <ImageViewing key={props.images.length} {...props} />
+);
+
+export default EnhancedImageViewing;
